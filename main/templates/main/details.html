@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<br>
+<div class="text-center">
+<h1 style="color:yellow">{{ business.name }}</h1>
+<img src="{{ business.image }}" alt="{{ business.name }}" class="img-fluid" width="40%">
+<p style="color:yellow">{{ business.location }}</p>
+<a href="{% url 'main:edit_business' business.id %}" class="btn btn-warning">Edit Info</a>
+<h3 style="color:white">See what others have said about this business</h3>
+<h4 style="color:gold"> Average Deaf friendly Rating: {{business.averagerating }} </h4>
+<a href="{% url 'main:delete_business' business.id %}" class="btn btn-danger">Delete Business</a>
+
+
+</div>
+
+{% endblock %}
