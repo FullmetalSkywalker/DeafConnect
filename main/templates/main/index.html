@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="text-center">{{ business.name }} </h3>
-                        <img src="{{ business.image }}" alt="" class="img-fluid">
+                        <a href="{% url 'main:detail' business.id %}"><img src="{{ business.image }}" alt="" class="img-fluid"></a>
                         <div class="text-center">
                         <i class="text-center">{{ business.location }} </i>
                         <a href="{% url 'main:detail' business.id %}">Read and Leave Reviews</a>

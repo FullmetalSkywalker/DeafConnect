@@ -8,10 +8,53 @@
 <p style="color:yellow">{{ business.location }}</p>
 <a href="{% url 'main:edit_business' business.id %}" class="btn btn-warning">Edit Info</a>
 <h3 style="color:white">See what others have said about this business</h3>
-<h4 style="color:gold"> Average Deaf friendly Rating: {{business.averagerating }} </h4>
-<a href="{% url 'main:delete_business' business.id %}" class="btn btn-danger">Delete Business</a>
+<h4 style="color:gold"> Average Deaf friendly Rating: {{ average }}/10 </h4>
+{% if request.user.is_authenticated %}
+    {% if request.user.is_superuser %}
+<a href="{% url 'main:delete_business' business.id %} " onclick="return confirm('Are you sure?');" class="btn btn-danger">Delete Business</a>
+    {% endif %}
+{% endif %}
+    <div class="card" style="background-color: #2877BD">
+        <div class="card-body">
+        <h3 class="text-center" style="color: yellow">Reviews From Other Users</h3>
+            {% for review in reviews %}
+                <div class="card" style="background-color: gold">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5 class="text-left">{{ review.user.username }}</h5>
+                                <h5>{{ review.rating }}</h5>
+                                {% if request.user == review.user %}
+                                <a href="{% url 'main:edit_review' business.id review.id %}">Edit</a>
+                                <a href="{% url 'main:delete_review' business.id review.id %}" onclick="return confirm('Are you sure?')">Delete</a>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-9">
+                                <p> {{ review.comment }} </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
 
-
+        </div> 
+    <div class="card" style="background-color: #3191E7">
+        <div class="card-body">
+            <h3 class="text-center" style="color: white">Leave a Review</h3>
+            <form action="{% url 'main:add_review' business.id %}" method="POST">
+                {% csrf_token %}
+                <label for="comment" style="color: white">Review</label>
+                <textarea name="comment" id="comment" cols="30" rows="5" class="form-control"></textarea>
+                <label for="rating" style="color: white">Rating</label>
+                <input type="range" id="rangeInput" name="rating" min="0" max="10" value="0" step="0.5" oninput = "amount.value=rangeInput.value" >
+        <output name="amount" id="amount" for="rangeInput">0</output>
+                <br>
+                <input type="submit" class="btn btn-warning" value="Add Review">
+            </form>
+        </div>
+    </div>
+   
 </div>
 
 {% endblock %}
